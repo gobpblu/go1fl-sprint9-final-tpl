@@ -53,9 +53,7 @@ func maxChunks(data []int) int {
 
 	chunksMaxValues := make([]int, CHUNKS)
 	var wg sync.WaitGroup
-	var mu sync.Mutex
 	chunkSize := int(math.Floor(float64(len(data)) / CHUNKS))
-	fmt.Println("CHUNK SIZE:", chunkSize, float64(SIZE)/8)
 
 	for i := range CHUNKS {
 		wg.Add(1)
@@ -70,11 +68,8 @@ func maxChunks(data []int) int {
 				chunk = data[beginIndex:endIndex]
 			}
 
-			chunkMax := maximum(chunk)
+			chunksMaxValues[i] = maximum(chunk)
 
-			mu.Lock()
-			chunksMaxValues[i] = chunkMax
-			mu.Unlock()
 			wg.Done()
 		}()
 	}
